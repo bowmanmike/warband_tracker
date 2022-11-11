@@ -30,7 +30,7 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            class="w-5 h-5"
+            class="w-5 h-5 hidden"
             id={"open-icon-#{dom_id(@id)}"}
           >
             <path
@@ -42,7 +42,7 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
           <h3 class="font-semibold text-xl text-center"><%= @title %></h3>
         </button>
       </div>
-      <div id={dom_id(@id)} phx-mounted={@collapsed && hide_section(@id)}>
+      <div id={dom_id(@id)} class="hidden">
         <%= render_slot(@inner_block) %>
       </div>
     </section>
@@ -51,23 +51,13 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
 
   def toggle_visible(js \\ %JS{}, id) do
     js
-    |> JS.toggle(to: dom_selector(id))
+    |> JS.toggle(
+      to: dom_selector(id),
+      in: {"transition-all", "opacity-0", "opacity-100"},
+      out: {"transition-all", "opacity-100", "opacity-0"}
+    )
     |> JS.toggle(to: "#open-icon-#{dom_id(id)}")
     |> JS.toggle(to: "#closed-icon-#{dom_id(id)}")
-  end
-
-  def show_section(js \\ %JS{}, id) do
-    js
-    |> JS.show(to: dom_selector(id))
-    |> JS.hide(to: "#closed-icon-#{dom_id(id)}")
-    |> JS.show(to: "#open-icon-#{dom_id(id)}")
-  end
-
-  def hide_section(js \\ %JS{}, id) do
-    js
-    |> JS.hide(to: dom_selector(id))
-    |> JS.show(to: "#closed-icon-#{dom_id(id)}")
-    |> JS.hide(to: "#open-icon-#{dom_id(id)}")
   end
 
   defp dom_id(id), do: "collapsible-#{id}"
