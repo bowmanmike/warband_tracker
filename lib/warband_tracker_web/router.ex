@@ -17,7 +17,8 @@ defmodule WarbandTrackerWeb.Router do
   scope "/", WarbandTrackerWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    # get "/", PageController, :home
+    live "/", TablesLive
   end
 
   # Other scopes may use custom stacks.
