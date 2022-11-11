@@ -9,10 +9,11 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
 
   @impl true
   def render(assigns) do
-  # TODO: Try to get this working with live view JS commands rather than a server trip
+    # TODO: Try to get this working with live view JS commands rather than a server trip
+    # <div class="flex gap-4" phx-click="toggle_open" phx-target={@myself}>
     ~H"""
-    <section class="mb-4 rounded-md shadow-md m-2 p-2">
-     <div class="flex gap-4" phx-click="toggle_open" phx-target={@myself}>
+    <section class="mb-4 rounded-md shadow-md m-2 p-2" phx-click={toggle_visible(@id)}>
+      <div class="flex gap-4">
         <button class="flex items-center gap-2">
           <%= if @collapsed do %>
             <svg
@@ -44,15 +45,26 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
           <h3 class="font-semibold text-xl text-center"><%= @title %></h3>
         </button>
       </div>
-      <div :if={@collapsed == false}>
+      <div id={dom_id(@id)}>
         <%= render_slot(@content) %>
       </div>
     </section>
     """
+
+    # <div :if={@collapsed == false}>
   end
 
   @impl true
   def handle_event("toggle_open", _assigns, socket) do
     {:noreply, assign(socket, :collapsed, !socket.assigns.collapsed)}
   end
+
+  def toggle_visible(js \\ %JS{}, id) do
+    selector = "##{dom_id(id)}"
+
+    js
+    |> JS.toggle(to: selector)
+  end
+
+  defp dom_id(id), do: "collapsible-#{id}"
 end
