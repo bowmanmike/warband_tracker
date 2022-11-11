@@ -1,5 +1,6 @@
 defmodule WarbandTrackerWeb.Components.CollapsibleSection do
   use WarbandTrackerWeb, :live_component
+  use Phoenix.Component
 
   alias Phoenix.LiveView.JS
 
@@ -7,20 +8,17 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
   attr :collapsed, :boolean, default: true
   slot :content, required: true
 
-  @impl true
-  def render(assigns) do
-    # TODO: Try to get this working with live view JS commands rather than a server trip
-    # <div class="flex gap-4" phx-click="toggle_open" phx-target={@myself}>
+  def collapsible_section(assigns) do
     ~H"""
-    <section class="mb-4 rounded-md shadow-md m-2 p-2" phx-click={toggle_visible(@id)}>
-      <div class="flex gap-4">
+    <section class="mb-4 rounded-md shadow-md m-2 p-2">
+      <div class="flex gap-4" phx-click={toggle_visible(@id)}>
         <button class="flex items-center gap-2">
-          <%= if @collapsed do %>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
               class="w-5 h-5"
+              phx-mounted={@collapsed}
             >
               <path
                 fill-rule="evenodd"
@@ -28,12 +26,12 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
                 clip-rule="evenodd"
               />
             </svg>
-          <% else %>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
               class="w-5 h-5"
+              phx-mounted={!@collapsed}
             >
               <path
                 fill-rule="evenodd"
@@ -41,30 +39,31 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
                 clip-rule="evenodd"
               />
             </svg>
-          <% end %>
           <h3 class="font-semibold text-xl text-center"><%= @title %></h3>
         </button>
       </div>
-      <div id={dom_id(@id)}>
+      <div id={dom_id(@id)} phx-mounted={@collapsed && hide_section(@id)}>
         <%= render_slot(@content) %>
       </div>
     </section>
     """
-
-    # <div :if={@collapsed == false}>
-  end
-
-  @impl true
-  def handle_event("toggle_open", _assigns, socket) do
-    {:noreply, assign(socket, :collapsed, !socket.assigns.collapsed)}
   end
 
   def toggle_visible(js \\ %JS{}, id) do
-    selector = "##{dom_id(id)}"
-
     js
-    |> JS.toggle(to: selector)
+    |> JS.toggle(to: dom_selector(id))
+  end
+
+  def show_section(js \\ %JS{}, id) do
+    js
+    |> JS.show(to: dom_selector(id))
+  end
+
+  def hide_section(js \\ %JS{}, id) do
+    js
+    |> JS.hide(to: dom_selector(id))
   end
 
   defp dom_id(id), do: "collapsible-#{id}"
+  defp dom_selector(id), do: "##{dom_id(id)}"
 end
