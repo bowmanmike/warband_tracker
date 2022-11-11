@@ -1,15 +1,18 @@
 defmodule WarbandTrackerWeb.Components.CollapsibleSection do
   use WarbandTrackerWeb, :live_component
 
+  alias Phoenix.LiveView.JS
+
   attr :title, :string, required: true
   attr :collapsed, :boolean, default: true
   slot :content, required: true
 
   @impl true
   def render(assigns) do
+  # TODO: Try to get this working with live view JS commands rather than a server trip
     ~H"""
     <section class="mb-4 rounded-md shadow-md m-2 p-2">
-      <div class="flex gap-4" phx-click="toggle_open" phx-target={@myself}>
+     <div class="flex gap-4" phx-click="toggle_open" phx-target={@myself}>
         <button class="flex items-center gap-2">
           <%= if @collapsed do %>
             <svg
