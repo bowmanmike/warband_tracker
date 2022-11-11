@@ -18,7 +18,7 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
               viewBox="0 0 20 20"
               fill="currentColor"
               class="w-5 h-5"
-              phx-mounted={@collapsed}
+              id={"closed-icon-#{dom_id(@id)}"}
             >
               <path
                 fill-rule="evenodd"
@@ -31,7 +31,7 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
               viewBox="0 0 20 20"
               fill="currentColor"
               class="w-5 h-5"
-              phx-mounted={!@collapsed}
+              id={"open-icon-#{dom_id(@id)}"}
             >
               <path
                 fill-rule="evenodd"
@@ -52,16 +52,22 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
   def toggle_visible(js \\ %JS{}, id) do
     js
     |> JS.toggle(to: dom_selector(id))
+    |> JS.toggle(to: "#open-icon-#{dom_id(id)}")
+    |> JS.toggle(to: "#closed-icon-#{dom_id(id)}")
   end
 
   def show_section(js \\ %JS{}, id) do
     js
     |> JS.show(to: dom_selector(id))
+    |> JS.hide(to: "#closed-icon-#{dom_id(id)}")
+    |> JS.show(to: "#open-icon-#{dom_id(id)}")
   end
 
   def hide_section(js \\ %JS{}, id) do
     js
     |> JS.hide(to: dom_selector(id))
+    |> JS.show(to: "#closed-icon-#{dom_id(id)}")
+    |> JS.hide(to: "#open-icon-#{dom_id(id)}")
   end
 
   defp dom_id(id), do: "collapsible-#{id}"
