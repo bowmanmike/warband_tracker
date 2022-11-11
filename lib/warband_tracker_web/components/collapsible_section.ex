@@ -1,12 +1,12 @@
 defmodule WarbandTrackerWeb.Components.CollapsibleSection do
-  use WarbandTrackerWeb, :live_component
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
 
   attr :title, :string, required: true
   attr :collapsed, :boolean, default: true
-  slot :content, required: true
+  attr :id, :string, required: true
+  slot :inner_block, required: true
 
   def collapsible_section(assigns) do
     ~H"""
@@ -43,7 +43,7 @@ defmodule WarbandTrackerWeb.Components.CollapsibleSection do
         </button>
       </div>
       <div id={dom_id(@id)} phx-mounted={@collapsed && hide_section(@id)}>
-        <%= render_slot(@content) %>
+        <%= render_slot(@inner_block) %>
       </div>
     </section>
     """
