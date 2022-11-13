@@ -1,0 +1,39 @@
+<.header>
+  Listing Warbands
+  <:actions>
+    <.link patch={~p"/warbands/new"}>
+      <.button>New Warband</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="warbands" rows={@warbands} row_click={&JS.navigate(~p"/warbands/#{&1}")}>
+  <:col :let={warband} label="Name"><%= warband.name %></:col>
+  <:action :let={warband}>
+    <div class="sr-only">
+      <.link navigate={~p"/warbands/#{warband}"}>Show</.link>
+    </div>
+    <.link patch={~p"/warbands/#{warband}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={warband}>
+    <.link phx-click={JS.push("delete", value: %{id: warband.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="warband-modal"
+  show
+  on_cancel={JS.navigate(~p"/warbands")}
+>
+  <.live_component
+    module={WarbandTrackerWeb.WarbandLive.FormComponent}
+    id={@warband.id || :new}
+    title={@page_title}
+    action={@live_action}
+    warband={@warband}
+    navigate={~p"/warbands"}
+  />
+</.modal>

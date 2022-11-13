@@ -69,6 +69,13 @@ defmodule WarbandTrackerWeb.Router do
       on_mount: [{WarbandTrackerWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+
+      live "/warbands", WarbandLive.Index, :index
+      live "/warbands/new", WarbandLive.Index, :new
+      live "/warbands/:id/edit", WarbandLive.Index, :edit
+
+      live "/warbands/:id", WarbandLive.Show, :show
+      live "/warbands/:id/show/edit", WarbandLive.Show, :edit
     end
   end
 
