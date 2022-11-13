@@ -1,12 +1,15 @@
 defmodule WarbandTrackerWeb.WarbandLive.Index do
   use WarbandTrackerWeb, :live_view
 
-  alias WarbandTracker.Warbands
+  alias WarbandTracker.{Accounts, Warbands}
   alias WarbandTracker.Warbands.Warband
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :warbands, list_warbands())}
+  def mount(_params, session, socket) do
+    user = Accounts.get_user_by_session_token(Map.get(session, "user_token"))
+    assigns = %{warbands: list_warbands(), current_user: user}
+
+    {:ok, assign(socket, assigns)}
   end
 
   @impl true

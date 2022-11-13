@@ -21,6 +21,13 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
         phx-submit="save"
       >
         <.input field={{f, :name}} type="text" label="name" />
+        <.input field={{f, :type}} type="text" label="type" />
+        <.input field={{f, :gold_crowns}} type="text" label="gold_crowns" />
+        <.input field={{f, :wyrdstone_shards}} type="text" label="wyrdstone_shards" />
+        <.input field={{f, :water_units}} type="text" label="water_units" />
+        <.input field={{f, :burden}} type="text" label="burden" />
+        <.input field={{f, :burden_limit}} type="text" label="burden_limit" />
+        <.input field={{f, :user_id}} type="hidden" value={@user.id}/>
         <:actions>
           <.button phx-disable-with="Saving...">Save Warband</.button>
         </:actions>
@@ -31,7 +38,7 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
 
   @impl true
   def update(%{warband: warband} = assigns, socket) do
-    changeset = Warbands.change_warband(warband)
+    changeset = warband |> Map.put(:user, assigns.user) |> Warbands.change_warband()
 
     {:ok,
      socket
@@ -50,6 +57,8 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
   end
 
   def handle_event("save", %{"warband" => warband_params}, socket) do
+    # params = Map.merge(warband_params, %{"user_id" => socket.assigns.user})
+    # IO.inspect(params)
     save_warband(socket, socket.assigns.action, warband_params)
   end
 
@@ -75,6 +84,7 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
          |> push_navigate(to: socket.assigns.navigate)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset)
         {:noreply, assign(socket, changeset: changeset)}
     end
   end

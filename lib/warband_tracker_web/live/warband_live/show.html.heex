@@ -1,6 +1,5 @@
 <.header>
-  Warband <%= @warband.id %>
-  <:subtitle>This is a warband record from your database.</:subtitle>
+  <%= @warband.name %>
   <:actions>
     <.link patch={~p"/warbands/#{@warband}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit warband</.button>
@@ -14,7 +13,12 @@
 
 <.back navigate={~p"/warbands"}>Back to warbands</.back>
 
-<.modal :if={@live_action == :edit} id="warband-modal" show on_cancel={JS.patch(~p"/warbands/#{@warband}")}>
+<.modal
+  :if={@live_action == :edit}
+  id="warband-modal"
+  show
+  on_cancel={JS.patch(~p"/warbands/#{@warband}")}
+>
   <.live_component
     module={WarbandTrackerWeb.WarbandLive.FormComponent}
     id={@warband.id}

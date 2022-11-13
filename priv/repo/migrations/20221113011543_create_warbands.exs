@@ -3,7 +3,7 @@ defmodule WarbandTracker.Repo.Migrations.CreateWarbands do
 
   def change do
     create table(:warbands) do
-      add :name, :string
+      add :name, :string, required: true
       add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
