@@ -1,4 +1,4 @@
 defmodule WarbandTrackerWeb.TablesLive do
-  use Phoenix.LiveView
+  use WarbandTrackerWeb, :live_view
   import WarbandTrackerWeb.Components.CollapsibleSection
 end
