@@ -14,3 +14,6 @@ jobs:
       - run: mix compile --warnings-as-errors
       - run: mix test
       - run: mix format --check-formatted
+        # TODO: Add mix credo check
+        # TODO: Parallelize these jobs
+        # TODO: Cache builds, we're building twice, once for test once for --warnings-as-errors
