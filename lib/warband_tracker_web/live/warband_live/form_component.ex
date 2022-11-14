@@ -27,7 +27,8 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
         <.input field={{f, :water_units}} type="text" label="water_units" />
         <.input field={{f, :burden}} type="text" label="burden" />
         <.input field={{f, :burden_limit}} type="text" label="burden_limit" />
-        <.input field={{f, :user_id}} type="hidden" value={@user.id}/>
+        <!-- # TODO: don't use a hidden field here, too easy to fake -->
+        <.input field={{f, :user_id}} type="hidden" value={@user.id} />
         <:actions>
           <.button phx-disable-with="Saving...">Save Warband</.button>
         </:actions>
@@ -78,10 +79,10 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
   defp save_warband(socket, :new, warband_params) do
     case Warbands.create_warband(warband_params) do
       {:ok, _warband} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Warband created successfully")
-         |> push_navigate(to: socket.assigns.navigate)}
+        socket
+        |> put_flash(:info, "Warband created successfully")
+        |> push_navigate(to: socket.assigns.navigate)
+        |> noreply()
 
       {:error, %Ecto.Changeset{} = changeset} ->
         IO.inspect(changeset)

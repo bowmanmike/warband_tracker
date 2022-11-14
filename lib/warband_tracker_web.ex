@@ -55,8 +55,9 @@ defmodule WarbandTrackerWeb do
       use Phoenix.LiveView,
         layout: {WarbandTrackerWeb.Layouts, :app}
 
-      def noreply(socket), do: {:noreply, socket}
+      # def noreply(socket), do: {:noreply, socket}
 
+      unquote(socket_helpers())
       unquote(html_helpers())
     end
   end
@@ -65,6 +66,7 @@ defmodule WarbandTrackerWeb do
     quote do
       use Phoenix.LiveComponent
 
+      unquote(socket_helpers())
       unquote(html_helpers())
     end
   end
@@ -104,6 +106,12 @@ defmodule WarbandTrackerWeb do
         endpoint: WarbandTrackerWeb.Endpoint,
         router: WarbandTrackerWeb.Router,
         statics: WarbandTrackerWeb.static_paths()
+    end
+  end
+
+  def socket_helpers do
+    quote do
+      def noreply(socket), do: {:noreply, socket}
     end
   end
 
