@@ -28,6 +28,7 @@ defmodule WarbandTrackerWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import WarbandTrackerWeb.ConnCase
+      import WarbandTracker.Factory
     end
   end
 

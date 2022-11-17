@@ -39,6 +39,7 @@ defmodule WarbandTracker.MixProject do
       {:ecto_psql_extras, "~> 0.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
       {:ex_machina, "~> 2.7.0", only: [:dev, :test]},
+      {:faker, "~> 0.17", only: [:dev, :test]},
       {:finch, "~> 0.13"},
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},

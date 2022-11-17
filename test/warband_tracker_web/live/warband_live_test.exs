@@ -8,9 +8,15 @@ defmodule WarbandTrackerWeb.WarbandLiveTest do
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
-  defp create_warband(_) do
-    warband = warband_fixture()
+  defp create_warband(%{user: user}) do
+    warband = warband_fixture(%{user_id: user.id})
     %{warband: warband}
+  end
+
+  setup do
+    user = insert(:user)
+
+    %{user: user}
   end
 
   describe "Index" do
