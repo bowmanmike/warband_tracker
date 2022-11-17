@@ -8,7 +8,7 @@ defmodule WarbandTracker.WarbandsTest do
 
     import WarbandTracker.WarbandsFixtures
 
-    @invalid_attrs %{name: nil}
+    @invalid_attrs %{name: nil, user_id: nil}
 
     test "list_warbands/0 returns all warbands" do
       warband = warband_fixture()
@@ -46,6 +46,7 @@ defmodule WarbandTracker.WarbandsTest do
     end
 
     test "delete_warband/1 deletes the warband" do
+    require IEx; IEx.pry()
       warband = warband_fixture()
       assert {:ok, %Warband{}} = Warbands.delete_warband(warband)
       assert_raise Ecto.NoResultsError, fn -> Warbands.get_warband!(warband.id) end
