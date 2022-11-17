@@ -19,8 +19,6 @@ defmodule WarbandTracker.Warbands.Warband do
 
   @doc false
   def changeset(warband, attrs) do
-    IO.inspect(attrs, label: :schema)
-
     warband
     |> cast(attrs, [
       :name,
@@ -32,7 +30,6 @@ defmodule WarbandTracker.Warbands.Warband do
       :burden_limit,
       :user_id
     ])
-    # |> put_assoc(:user, attrs[:user])
     |> validate_required([:name, :user_id])
   end
 end

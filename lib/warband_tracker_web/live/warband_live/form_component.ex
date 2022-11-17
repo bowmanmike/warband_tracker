@@ -20,15 +20,13 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={{f, :name}} type="text" label="name" />
-        <.input field={{f, :type}} type="text" label="type" />
-        <.input field={{f, :gold_crowns}} type="text" label="gold_crowns" />
-        <.input field={{f, :wyrdstone_shards}} type="text" label="wyrdstone_shards" />
-        <.input field={{f, :water_units}} type="text" label="water_units" />
-        <.input field={{f, :burden}} type="text" label="burden" />
-        <.input field={{f, :burden_limit}} type="text" label="burden_limit" />
-        <!-- # TODO: don't use a hidden field here, too easy to fake -->
-        <.input field={{f, :user_id}} type="hidden" value={@user.id} />
+        <.input field={{f, :name}} type="text" label="Name" />
+        <.input field={{f, :type}} type="text" label="Type" />
+        <.input field={{f, :gold_crowns}} type="text" label="Gold Crowns" />
+        <.input field={{f, :wyrdstone_shards}} type="text" label="Wyrdstone_Shards" />
+        <.input field={{f, :water_units}} type="text" label="Water Units" />
+        <.input field={{f, :burden}} type="text" label="Burden" />
+        <.input field={{f, :burden_limit}} type="text" label="Burden Limit" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Warband</.button>
         </:actions>
@@ -58,9 +56,9 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
   end
 
   def handle_event("save", %{"warband" => warband_params}, socket) do
-    # params = Map.merge(warband_params, %{"user_id" => socket.assigns.user})
-    # IO.inspect(params)
-    save_warband(socket, socket.assigns.action, warband_params)
+    params = Map.merge(warband_params, %{"user_id" => socket.assigns.user.id})
+
+    save_warband(socket, socket.assigns.action, params)
   end
 
   defp save_warband(socket, :edit, warband_params) do
@@ -85,7 +83,6 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
         |> noreply()
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset)
         {:noreply, assign(socket, changeset: changeset)}
     end
   end
