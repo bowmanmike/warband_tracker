@@ -2,12 +2,11 @@ defmodule WarbandTrackerWeb.UserResetPasswordLiveTest do
   use WarbandTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import WarbandTracker.AccountsFixtures
 
   alias WarbandTracker.Accounts
 
   setup do
-    user = user_fixture()
+    user = insert(:user)
 
     token =
       extract_user_token(fn url ->

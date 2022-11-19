@@ -12,26 +12,39 @@
     </script>
   </head>
   <body class="bg-gray-50 text-gray-800 antialiased">
-    <ul>
-      <%= if @current_user do %>
-        <li>
-          <%= @current_user.email %>
-        </li>
-        <li>
-          <.link href={~p"/users/settings"}>Settings</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log_out"} method="delete">Log out</.link>
-        </li>
-      <% else %>
-        <li>
-          <.link href={~p"/users/register"}>Register</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log_in"}>Log in</.link>
-        </li>
-      <% end %>
-    </ul>
+    <header class="md:mt-4 px-4 sm:px-6 lg:px-8">
+      <h1 class="font-bold text-2xl w-full text-center"><a href="/">Mordheim Helper</a></h1>
+      <nav class="flex justify-center">
+        <%= if @current_user do %>
+          <ul class="flex gap-4">
+            <li>
+              <.link href={~p"/warbands"}>Warbands</.link>
+            </li>
+            <li>
+              <.link href={~p"/"}>Tables</.link>
+            </li>
+            <li>
+              Logged in as <span class="italic"><%= @current_user.email %></span>
+            </li>
+            <li>
+              <.link href={~p"/users/settings"}>Settings</.link>
+            </li>
+            <li>
+              <.link href={~p"/users/log_out"} method="delete">Log out</.link>
+            </li>
+          </ul>
+        <% else %>
+          <ul class="flex gap-4">
+            <li>
+              <.link href={~p"/users/register"}>Register</.link>
+            </li>
+            <li>
+              <.link href={~p"/users/log_in"}>Log in</.link>
+            </li>
+          </ul>
+        <% end %>
+      </nav>
+    </header>
     <div class="mx-auto my-4 max-w-7xl">
       <%= @inner_content %>
     </div>

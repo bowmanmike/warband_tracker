@@ -24,6 +24,7 @@ defmodule WarbandTracker.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import WarbandTracker.DataCase
+      import WarbandTracker.Factory
     end
   end
 

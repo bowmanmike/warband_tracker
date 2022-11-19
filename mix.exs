@@ -19,12 +19,13 @@ defmodule WarbandTracker.MixProject do
   def application do
     [
       mod: {WarbandTracker.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:dev), do: ["lib", "test/support/factories", "test/support/factory.ex"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -35,7 +36,10 @@ defmodule WarbandTracker.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.6.7"},
       {:ecto_sql, "~> 3.6"},
+      {:ecto_psql_extras, "~> 0.6"},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
+      {:ex_machina, "~> 2.7.0", only: [:dev, :test]},
+      {:faker, "~> 0.17", only: [:dev, :test]},
       {:finch, "~> 0.13"},
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},
@@ -64,11 +68,17 @@ defmodule WarbandTracker.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "ecto.migrate": ["ecto.migrate", &ecto_dump/1],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "ecto.rollback": ["ecto.rollback", &ecto_dump/1],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      setup: ["deps.get", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
+  end
+
+  defp ecto_dump(_args) do
+    if Mix.env() == :dev, do: Mix.Task.run("ecto.dump")
   end
 end

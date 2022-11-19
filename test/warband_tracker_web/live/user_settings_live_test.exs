@@ -3,13 +3,12 @@ defmodule WarbandTrackerWeb.UserSettingsLiveTest do
 
   alias WarbandTracker.Accounts
   import Phoenix.LiveViewTest
-  import WarbandTracker.AccountsFixtures
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do
       {:ok, _lv, html} =
         conn
-        |> log_in_user(user_fixture())
+        |> log_in_user(insert(:user))
         |> live(~p"/users/settings")
 
       assert html =~ "Change Email"
@@ -28,7 +27,7 @@ defmodule WarbandTrackerWeb.UserSettingsLiveTest do
   describe "update email form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = user_fixture(%{password: password})
+      user = build(:user) |> set_password(password) |> insert()
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 
@@ -85,7 +84,7 @@ defmodule WarbandTrackerWeb.UserSettingsLiveTest do
   describe "update password form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = user_fixture(%{password: password})
+      user = build(:user) |> set_password(password) |> insert()
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 
@@ -160,7 +159,7 @@ defmodule WarbandTrackerWeb.UserSettingsLiveTest do
 
   describe "confirm email" do
     setup %{conn: conn} do
-      user = user_fixture()
+      user = insert(:user)
       email = unique_user_email()
 
       token =

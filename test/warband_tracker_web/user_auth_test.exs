@@ -4,7 +4,6 @@ defmodule WarbandTrackerWeb.UserAuthTest do
   alias Phoenix.LiveView
   alias WarbandTracker.Accounts
   alias WarbandTrackerWeb.UserAuth
-  import WarbandTracker.AccountsFixtures
 
   @remember_me_cookie "_warband_tracker_web_user_remember_me"
 
@@ -14,7 +13,7 @@ defmodule WarbandTrackerWeb.UserAuthTest do
       |> Map.replace!(:secret_key_base, WarbandTrackerWeb.Endpoint.config(:secret_key_base))
       |> init_test_session(%{})
 
-    %{user: user_fixture(), conn: conn}
+    %{user: insert(:user), conn: conn}
   end
 
   describe "log_in_user/3" do

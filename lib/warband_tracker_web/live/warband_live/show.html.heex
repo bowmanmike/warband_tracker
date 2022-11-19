@@ -1,0 +1,31 @@
+<.header>
+  <%= @warband.name %>
+  <:actions>
+    <.link patch={~p"/warbands/#{@warband}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit warband</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @warband.name %></:item>
+</.list>
+
+<.back navigate={~p"/warbands"}>Back to warbands</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="warband-modal"
+  show
+  on_cancel={JS.patch(~p"/warbands/#{@warband}")}
+>
+  <.live_component
+    module={WarbandTrackerWeb.WarbandLive.FormComponent}
+    id={@warband.id}
+    title={@page_title}
+    action={@live_action}
+    warband={@warband}
+    user={@current_user}
+    navigate={~p"/warbands/#{@warband}"}
+  />
+</.modal>
