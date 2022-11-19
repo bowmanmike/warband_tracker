@@ -8,7 +8,7 @@ defmodule WarbandTrackerWeb.UserConfirmationLiveTest do
   alias WarbandTracker.Repo
 
   setup do
-    %{user: user_fixture()}
+    %{user: insert(:user)}
   end
 
   describe "Confirm user" do

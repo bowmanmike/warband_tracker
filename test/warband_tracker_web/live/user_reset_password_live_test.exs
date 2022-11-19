@@ -7,7 +7,7 @@ defmodule WarbandTrackerWeb.UserResetPasswordLiveTest do
   alias WarbandTracker.Accounts
 
   setup do
-    user = user_fixture()
+    user = insert(:user)
 
     token =
       extract_user_token(fn url ->

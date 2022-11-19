@@ -2,7 +2,6 @@ defmodule WarbandTrackerWeb.UserForgotPasswordLiveTest do
   use WarbandTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import WarbandTracker.AccountsFixtures
 
   alias WarbandTracker.Accounts
   alias WarbandTracker.Repo
@@ -19,7 +18,7 @@ defmodule WarbandTrackerWeb.UserForgotPasswordLiveTest do
     test "redirects if already logged in", %{conn: conn} do
       result =
         conn
-        |> log_in_user(user_fixture())
+        |> log_in_user(insert(:user))
         |> live(~p"/users/reset_password")
         |> follow_redirect(conn, ~p"/")
 
@@ -29,7 +28,7 @@ defmodule WarbandTrackerWeb.UserForgotPasswordLiveTest do
 
   describe "Reset link" do
     setup do
-      %{user: user_fixture()}
+      %{user: insert(:user)}
     end
 
     test "sends a new reset password token", %{conn: conn, user: user} do

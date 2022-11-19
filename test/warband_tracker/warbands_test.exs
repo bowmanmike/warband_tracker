@@ -12,18 +12,16 @@ defmodule WarbandTracker.WarbandsTest do
   describe "warbands" do
     alias WarbandTracker.Warbands.Warband
 
-    import WarbandTracker.WarbandsFixtures
-
     @invalid_attrs %{name: nil, user_id: nil}
 
     test "list_warbands/0 returns all warbands", %{user: user} do
-      warband = warband_fixture(%{user_id: user.id})
-      assert Warbands.list_warbands() == [warband]
+      %{id: warband_id} = insert(:warband, user: user)
+      assert [%{id: ^warband_id}] = Warbands.list_warbands()
     end
 
     test "get_warband!/1 returns the warband with given id", %{user: user} do
-      warband = warband_fixture(%{user_id: user.id})
-      assert Warbands.get_warband!(warband.id) == warband
+      %{id: warband_id} = insert(:warband, user: user)
+      assert %{id: ^warband_id} = Warbands.get_warband!(warband_id)
     end
 
     test "create_warband/1 with valid data creates a warband", %{user: user} do
@@ -38,7 +36,7 @@ defmodule WarbandTracker.WarbandsTest do
     end
 
     test "update_warband/2 with valid data updates the warband", %{user: user} do
-      warband = warband_fixture(%{user_id: user.id})
+      warband = insert(:warband, user: user)
       update_attrs = %{name: "some updated name"}
 
       assert {:ok, %Warband{} = warband} = Warbands.update_warband(warband, update_attrs)
@@ -46,21 +44,19 @@ defmodule WarbandTracker.WarbandsTest do
     end
 
     test "update_warband/2 with invalid data returns error changeset", %{user: user} do
-      warband = warband_fixture(%{user_id: user.id})
+      %{id: warband_id} = warband = insert(:warband, user: user)
       assert {:error, %Ecto.Changeset{}} = Warbands.update_warband(warband, @invalid_attrs)
-      assert warband == Warbands.get_warband!(warband.id)
+      assert %{id: ^warband_id} = Warbands.get_warband!(warband_id)
     end
 
     test "delete_warband/1 deletes the warband", %{user: user} do
-      # require IEx
-      # IEx.pry()
-      warband = warband_fixture(%{user_id: user.id})
+      warband = insert(:warband, user: user)
       assert {:ok, %Warband{}} = Warbands.delete_warband(warband)
       assert_raise Ecto.NoResultsError, fn -> Warbands.get_warband!(warband.id) end
     end
 
     test "change_warband/1 returns a warband changeset", %{user: user} do
-      warband = warband_fixture(%{user_id: user.id})
+      warband = insert(:warband, user: user)
       assert %Ecto.Changeset{} = Warbands.change_warband(warband)
     end
   end

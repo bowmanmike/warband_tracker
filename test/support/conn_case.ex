@@ -16,6 +16,7 @@ defmodule WarbandTrackerWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
+  import WarbandTracker.Factory
 
   using do
     quote do
@@ -46,7 +47,8 @@ defmodule WarbandTrackerWeb.ConnCase do
   test context.
   """
   def register_and_log_in_user(%{conn: conn}) do
-    user = WarbandTracker.AccountsFixtures.user_fixture()
+    # user = WarbandTracker.AccountsFixtures.user_fixture()
+    user = insert(:user)
     %{conn: log_in_user(conn, user), user: user}
   end
 

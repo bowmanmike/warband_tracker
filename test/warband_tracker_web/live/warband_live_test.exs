@@ -2,14 +2,14 @@ defmodule WarbandTrackerWeb.WarbandLiveTest do
   use WarbandTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import WarbandTracker.WarbandsFixtures
 
   @create_attrs %{name: "some name"}
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
   defp create_warband(%{user: user}) do
-    warband = warband_fixture(%{user_id: user.id})
+    warband = insert(:warband, user: user)
+
     %{warband: warband}
   end
 

@@ -4,7 +4,7 @@ defmodule WarbandTrackerWeb.UserSessionControllerTest do
   import WarbandTracker.AccountsFixtures
 
   setup do
-    %{user: user_fixture()}
+    %{user: insert(:user)}
   end
 
   describe "POST /users/log_in" do

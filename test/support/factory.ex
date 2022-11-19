@@ -9,6 +9,7 @@ defmodule WarbandTracker.Factory do
   use ExMachina.Ecto, repo: WarbandTracker.Repo
 
   use WarbandTracker.Factories.{
-    User
+    User,
+    Warband
   }
 end

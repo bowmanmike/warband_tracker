@@ -2,13 +2,12 @@ defmodule WarbandTrackerWeb.UserConfirmationInstructionsLiveTest do
   use WarbandTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import WarbandTracker.AccountsFixtures
 
   alias WarbandTracker.Accounts
   alias WarbandTracker.Repo
 
   setup do
-    %{user: user_fixture()}
+    %{user: insert(:user)}
   end
 
   describe "Resend confirmation" do
