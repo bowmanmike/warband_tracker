@@ -3,7 +3,6 @@ defmodule WarbandTrackerWeb.UserSettingsLiveTest do
 
   alias WarbandTracker.Accounts
   import Phoenix.LiveViewTest
-  import WarbandTracker.AccountsFixtures
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do

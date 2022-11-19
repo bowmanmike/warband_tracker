@@ -2,7 +2,6 @@ defmodule WarbandTrackerWeb.UserRegistrationLiveTest do
   use WarbandTrackerWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import WarbandTracker.AccountsFixtures
 
   describe "Registration page" do
     test "renders registration page", %{conn: conn} do

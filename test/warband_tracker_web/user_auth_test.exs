@@ -4,7 +4,6 @@ defmodule WarbandTrackerWeb.UserAuthTest do
   alias Phoenix.LiveView
   alias WarbandTracker.Accounts
   alias WarbandTrackerWeb.UserAuth
-  import WarbandTracker.AccountsFixtures
 
   @remember_me_cookie "_warband_tracker_web_user_remember_me"
 

@@ -1,10 +1,10 @@
 defmodule WarbandTrackerWeb.UserSessionControllerTest do
   use WarbandTrackerWeb.ConnCase, async: true
 
-  import WarbandTracker.AccountsFixtures
-
   setup do
-    %{user: insert(:user)}
+    user = build(:user) |> set_password(valid_user_password()) |> insert()
+
+    %{user: user}
   end
 
   describe "POST /users/log_in" do

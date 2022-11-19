@@ -3,7 +3,6 @@ defmodule WarbandTracker.AccountsTest do
 
   alias WarbandTracker.Accounts
 
-  import WarbandTracker.AccountsFixtures
   alias WarbandTracker.Accounts.{User, UserToken}
 
   describe "get_user_by_email/1" do
@@ -28,7 +27,7 @@ defmodule WarbandTracker.AccountsTest do
     end
 
     test "returns the user if the email and password are valid" do
-      %{id: id} = user = insert(:user)
+      %{id: id} = user = build(:user) |> set_password(valid_user_password()) |> insert()
 
       assert %User{id: ^id} =
                Accounts.get_user_by_email_and_password(user.email, valid_user_password())
@@ -168,7 +167,7 @@ defmodule WarbandTracker.AccountsTest do
 
     test "applies the email without persisting it", %{user: user} do
       email = unique_user_email()
-      {:ok, user} = Accounts.apply_user_email(user, valid_user_password(), %{email: email})
+      {:ok, user} = Accounts.apply_user_email(user, user.password, %{email: email})
       assert user.email == email
       assert Accounts.get_user!(user.id).email != email
     end
@@ -256,7 +255,9 @@ defmodule WarbandTracker.AccountsTest do
 
   describe "update_user_password/3" do
     setup do
-      %{user: insert(:user)}
+      user = build(:user) |> set_password(valid_user_password()) |> insert()
+
+      %{user: user}
     end
 
     test "validates password", %{user: user} do
