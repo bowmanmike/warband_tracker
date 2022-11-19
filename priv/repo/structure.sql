@@ -35,6 +35,49 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: heroes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.heroes (
+    id bigint NOT NULL,
+    type character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    move integer NOT NULL,
+    weapon_skill integer NOT NULL,
+    bow_skill integer NOT NULL,
+    strength integer NOT NULL,
+    toughness integer NOT NULL,
+    wounds integer NOT NULL,
+    initiative integer NOT NULL,
+    attacks integer NOT NULL,
+    leadership integer NOT NULL,
+    special_rules character varying(255)[] DEFAULT ARRAY[]::character varying[] NOT NULL,
+    weapons_and_armour_rules character varying(255) NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: heroes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.heroes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: heroes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.heroes_id_seq OWNED BY public.heroes.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -181,6 +224,13 @@ ALTER SEQUENCE public.warbands_id_seq OWNED BY public.warbands.id;
 
 
 --
+-- Name: heroes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heroes ALTER COLUMN id SET DEFAULT nextval('public.heroes_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -206,6 +256,14 @@ ALTER TABLE ONLY public.warband ALTER COLUMN id SET DEFAULT nextval('public.warb
 --
 
 ALTER TABLE ONLY public.warbands ALTER COLUMN id SET DEFAULT nextval('public.warbands_id_seq'::regclass);
+
+
+--
+-- Name: heroes heroes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heroes
+    ADD CONSTRAINT heroes_pkey PRIMARY KEY (id);
 
 
 --
@@ -315,3 +373,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20221111181937);
 INSERT INTO public."schema_migrations" (version) VALUES (20221113011101);
 INSERT INTO public."schema_migrations" (version) VALUES (20221113011543);
 INSERT INTO public."schema_migrations" (version) VALUES (20221113222404);
+INSERT INTO public."schema_migrations" (version) VALUES (20221119224903);

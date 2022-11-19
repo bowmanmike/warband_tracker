@@ -6,7 +6,7 @@ defmodule WarbandTracker.Warbands do
   import Ecto.Query, warn: false
   alias WarbandTracker.Repo
 
-  alias WarbandTracker.Warbands.Warband
+  alias WarbandTracker.Warbands.{Hero, Warband}
 
   @doc """
   Returns the list of warbands.
@@ -100,5 +100,11 @@ defmodule WarbandTracker.Warbands do
   """
   def change_warband(%Warband{} = warband, attrs \\ %{}) do
     Warband.changeset(warband, attrs)
+  end
+
+  def create_hero(warband, attrs \\ %{}) do
+    %Hero{}
+    |> Hero.changeset(attrs)
+    |> Repo.insert()
   end
 end
