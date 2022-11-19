@@ -55,8 +55,6 @@ defmodule WarbandTrackerWeb do
       use Phoenix.LiveView,
         layout: {WarbandTrackerWeb.Layouts, :app}
 
-      # def noreply(socket), do: {:noreply, socket}
-
       unquote(socket_helpers())
       unquote(html_helpers())
     end
