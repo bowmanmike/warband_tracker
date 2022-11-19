@@ -28,7 +28,7 @@ defmodule WarbandTrackerWeb.UserSettingsLiveTest do
   describe "update email form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = insert(:user, password: password)
+      user = build(:user) |> set_password(password) |> insert()
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 
@@ -85,7 +85,7 @@ defmodule WarbandTrackerWeb.UserSettingsLiveTest do
   describe "update password form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = insert(:user, password: password)
+      user = build(:user) |> set_password(password) |> insert()
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 

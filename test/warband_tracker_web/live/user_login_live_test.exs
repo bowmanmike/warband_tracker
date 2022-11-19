@@ -27,7 +27,7 @@ defmodule WarbandTrackerWeb.UserLoginLiveTest do
     test "redirects if user login with valid credentials", %{conn: conn} do
       password = "123456789abcd"
 
-      user = build(:user, password: password) |> set_password(password)
+      user = build(:user, password: password) |> set_password(password) |> insert()
 
       {:ok, lv, _html} = live(conn, ~p"/users/log_in")
 
