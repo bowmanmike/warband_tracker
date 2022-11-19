@@ -13,10 +13,11 @@ defmodule WarbandTrackerWeb.WarbandLiveTest do
     %{warband: warband}
   end
 
-  setup do
+  setup %{conn: conn} do
     user = insert(:user)
+    conn = log_in_user(conn, user)
 
-    %{user: user}
+    %{user: user, conn: conn}
   end
 
   describe "Index" do
