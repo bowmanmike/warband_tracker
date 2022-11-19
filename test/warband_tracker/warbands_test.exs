@@ -29,6 +29,9 @@ defmodule WarbandTracker.WarbandsTest do
 
       assert {:ok, %Warband{} = warband} = Warbands.create_warband(valid_attrs)
       assert warband.name == "some name"
+
+      warband = Repo.preload(warband, :user)
+      assert warband.user_id == user.id
     end
 
     test "create_warband/1 with invalid data returns error changeset" do
