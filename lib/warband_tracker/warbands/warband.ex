@@ -13,6 +13,7 @@ defmodule WarbandTracker.Warbands.Warband do
     field :burden_limit, :integer, default: 0
 
     belongs_to :user, WarbandTracker.Accounts.User
+    has_many :heroes, WarbandTracker.Warbands.Hero
 
     timestamps()
   end

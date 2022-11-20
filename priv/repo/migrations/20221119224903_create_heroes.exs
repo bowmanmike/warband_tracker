@@ -16,6 +16,7 @@ defmodule WarbandTracker.Repo.Migrations.CreateHeroes do
       add :leadership, :integer, null: false
       add :special_rules, {:array, :string}, default: [], null: false
       add :weapons_and_armour_rules, :string, null: false
+      add :warband_id, references(:warbands, on_delete: :delete_all)
 
       timestamps()
     end

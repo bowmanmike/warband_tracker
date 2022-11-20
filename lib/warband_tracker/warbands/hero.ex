@@ -17,11 +17,15 @@ defmodule WarbandTracker.Warbands.Hero do
     field :special_rules, {:array, :string}, default: []
     field :weapons_and_armour_rules, :string
 
+    belongs_to :warband, WarbandTracker.Warbands.Warband
+
     timestamps()
   end
 
   @doc false
-  def changeset(hero, attrs) do
+  def changeset(hero, attrs, warband) do
+    attrs = Map.merge(attrs, %{warband_id: warband.id})
+
     hero
     |> cast(attrs, [
       :type,
@@ -36,7 +40,8 @@ defmodule WarbandTracker.Warbands.Hero do
       :attacks,
       :leadership,
       :special_rules,
-      :weapons_and_armour_rules
+      :weapons_and_armour_rules,
+      :warband_id
     ])
     |> validate_required([
       :type,
@@ -51,7 +56,9 @@ defmodule WarbandTracker.Warbands.Hero do
       :attacks,
       :leadership,
       :special_rules,
-      :weapons_and_armour_rules
+      :weapons_and_armour_rules,
+      :warband_id
     ])
+    |> foreign_key_constraint(:warband, name: "heroes_warband_id_fkey")
   end
 end

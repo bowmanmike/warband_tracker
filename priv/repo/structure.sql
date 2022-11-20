@@ -53,6 +53,7 @@ CREATE TABLE public.heroes (
     leadership integer NOT NULL,
     special_rules character varying(255)[] DEFAULT ARRAY[]::character varying[] NOT NULL,
     weapons_and_armour_rules character varying(255) NOT NULL,
+    warband_id bigint,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
 );
@@ -339,6 +340,14 @@ CREATE INDEX warband_user_id_index ON public.warband USING btree (user_id);
 --
 
 CREATE INDEX warbands_user_id_index ON public.warbands USING btree (user_id);
+
+
+--
+-- Name: heroes heroes_warband_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heroes
+    ADD CONSTRAINT heroes_warband_id_fkey FOREIGN KEY (warband_id) REFERENCES public.warbands(id) ON DELETE CASCADE;
 
 
 --

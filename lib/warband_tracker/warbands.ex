@@ -104,7 +104,7 @@ defmodule WarbandTracker.Warbands do
 
   def create_hero(warband, attrs \\ %{}) do
     %Hero{}
-    |> Hero.changeset(attrs)
+    |> Hero.changeset(attrs, warband)
     |> Repo.insert()
   end
 end
