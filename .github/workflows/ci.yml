@@ -59,8 +59,8 @@ jobs:
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.otp}}
-          elixir-version: ${{matrix.elixir}}
+          otp-version: "25.0"
+          elixir-version: "1.14.0"
       # Step: Check out the code.
       - name: Checkout code
         uses: actions/checkout@v3
@@ -107,8 +107,8 @@ jobs:
       - name: Set up Elixir
         uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{matrix.otp}}
-          elixir-version: ${{matrix.elixir}}
+          otp-version: "25.0"
+          elixir-version: "1.14.0"
       # Step: Check out the code.
       - name: Checkout code
         uses: actions/checkout@v3
