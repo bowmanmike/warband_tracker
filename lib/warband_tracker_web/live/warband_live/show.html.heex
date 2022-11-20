@@ -18,9 +18,11 @@
   <:col :let={hero} label="Type"><%= hero.type %></:col>
 </.table>
 
-<.button class="flex items-center gap-2" phx-click="add-hero">
-  <Heroicons.plus_circle mini class="h-5 w-5" /> Add Hero
-</.button>
+<.link patch={~p"/warbands/#{@warband}/heroes/edit"} phx-click={JS.push_focus()}>
+  <.button class="flex items-center gap-2">
+    <Heroicons.plus_circle mini class="h-5 w-5" /> Add Hero
+  </.button>
+</.link>
 
 <.back navigate={~p"/warbands"}>Back to warbands</.back>
 
@@ -41,7 +43,15 @@
   />
 </.modal>
 
-<.modal id="new-hero-form" show>
-  <%!-- NOTE: Need a new form component here --%>
-  <%!-- <.live_component module={WarbandTrackerWeb.WarbandLive.FormComponent} id={:new_hero_form} title="Add a Hero"/> --%>
+<.modal
+  :if={@live_action == :add_hero}
+  id="new-hero-form"
+  show
+  on_cancel={JS.patch(~p"/warbands/#{@warband}")}
+>
+  <.live_component
+    module={WarbandTrackerWeb.WarbandLive.Heroes.FormComponent}
+    id={:new_hero_form}
+    title="Add a Hero"
+  />
 </.modal>

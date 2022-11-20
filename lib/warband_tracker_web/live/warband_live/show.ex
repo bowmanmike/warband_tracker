@@ -2,6 +2,7 @@ defmodule WarbandTrackerWeb.WarbandLive.Show do
   use WarbandTrackerWeb, :live_view
 
   alias WarbandTracker.Warbands
+  alias Phoenix.LiveView.JS
 
   @impl true
   def mount(_params, _session, socket) do
@@ -19,12 +20,18 @@ defmodule WarbandTrackerWeb.WarbandLive.Show do
     |> noreply()
   end
 
-  @impl true
-  def handle_event("add-hero", _params, socket) do
-    # TODO: put up the modal here
-    noreply(socket)
-  end
+  # @impl true
+  # def handle_event("add-hero", _params, socket) do
+  #   # TODO: put up the modal here
+  #   noreply(socket)
+  # end
+
+  # def show_hero_form(js \\ %JS{}) do
+  #   js
+  #   |> JS.show(to: "#new-hero-form")
+  # end
 
   defp page_title(:show), do: "Show Warband"
   defp page_title(:edit), do: "Edit Warband"
+  defp page_title(:add_hero), do: "Add A Hero"
 end

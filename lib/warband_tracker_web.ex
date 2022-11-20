@@ -110,6 +110,7 @@ defmodule WarbandTrackerWeb do
   def socket_helpers do
     quote do
       def noreply(socket), do: {:noreply, socket}
+      def ok(socket), do: {:ok, socket}
     end
   end
 
