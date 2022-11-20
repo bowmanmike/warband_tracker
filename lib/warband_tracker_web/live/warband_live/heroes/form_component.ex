@@ -64,6 +64,22 @@ defmodule WarbandTrackerWeb.WarbandLive.Heroes.FormComponent do
     |> noreply()
   end
 
+  def handle_event("save", %{"hero" => hero_params}, socket) do
+    case Warbands.create_hero(socket.assigns.warband, hero_params) do
+      {:ok, _hero} ->
+        socket
+        |> put_flash(:info, "Hero created successfully")
+        |> push_navigate(to: socket.assigns.navigate)
+        |> noreply()
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        socket
+        |> put_flash(:error, "Something went wrong")
+        |> assign(:changeset, changeset)
+        |> noreply()
+    end
+  end
+
   def handle_event(event, params, socket) do
     IO.puts("handling event #{event} with values #{inspect(params)}")
 
