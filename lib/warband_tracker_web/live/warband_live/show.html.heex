@@ -18,7 +18,9 @@
   <:col :let={hero} label="Type"><%= hero.type %></:col>
 </.table>
 
-<.button class="flex items-center gap-2" phx-click="add-hero"><Heroicons.plus_circle mini class="h-5 w-5"/> Add Hero</.button>
+<.button class="flex items-center gap-2" phx-click="add-hero">
+  <Heroicons.plus_circle mini class="h-5 w-5" /> Add Hero
+</.button>
 
 <.back navigate={~p"/warbands"}>Back to warbands</.back>
 
