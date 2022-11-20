@@ -10,7 +10,7 @@ defmodule WarbandTrackerWeb.WarbandLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    warband = Warbands.get_warband!(id)
+    warband = Warbands.get_warband_for_user!(socket.assigns.current_user, id)
 
     socket
     |> assign(:page_title, page_title(socket.assigns.live_action))
@@ -19,6 +19,7 @@ defmodule WarbandTrackerWeb.WarbandLive.Show do
     |> noreply()
   end
 
+  @impl true
   def handle_event("add-hero", _params, socket) do
     # TODO: put up the modal here
     noreply(socket)

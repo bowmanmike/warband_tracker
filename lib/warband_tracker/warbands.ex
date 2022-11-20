@@ -7,6 +7,7 @@ defmodule WarbandTracker.Warbands do
   alias WarbandTracker.Repo
 
   alias WarbandTracker.Warbands.{Hero, Warband}
+  alias WarbandTracker.Accounts
 
   @doc """
   Returns the list of warbands.
@@ -19,6 +20,14 @@ defmodule WarbandTracker.Warbands do
   """
   def list_warbands do
     Repo.all(Warband)
+  end
+
+  def list_warbands_for_user(%Accounts.User{id: user_id}) do
+    Warband
+    |> where([w], w.user_id == ^user_id)
+    |> Repo.all()
+
+    # Repo.get_by(Warband, user_id: user_id)
   end
 
   @doc """
@@ -36,6 +45,24 @@ defmodule WarbandTracker.Warbands do
 
   """
   def get_warband!(id), do: Repo.get!(Warband, id)
+
+  @doc """
+  Gets a single warband, scoped to a user
+
+  Raises `Ecto.NoResultsError` if the Warband does not exist.
+
+  ## Examples
+
+      iex> get_warband_for_user!(user, 123)
+      %Warband{}
+
+      iex> get_warband_for_user!(user, 456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_warband_for_user!(%Accounts.User{id: user_id}, warband_id) do
+    Repo.get_by!(Warband, id: warband_id, user_id: user_id)
+  end
 
   @doc """
   Creates a warband.

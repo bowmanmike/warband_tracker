@@ -19,9 +19,33 @@ defmodule WarbandTracker.WarbandsTest do
       assert [%{id: ^warband_id}] = Warbands.list_warbands()
     end
 
+    test "list_warbands_for_user/1 returns all warbands for the provided user", %{user: user} do
+      insert_list(3, :warband, user: user)
+      other = insert(:warband)
+
+      result = Warbands.list_warbands_for_user(user)
+
+      assert length(result) == 3
+      assert Enum.all?(result, &(&1.user_id == user.id))
+      refute other.user_id == user.id
+    end
+
     test "get_warband!/1 returns the warband with given id", %{user: user} do
       %{id: warband_id} = insert(:warband, user: user)
       assert %{id: ^warband_id} = Warbands.get_warband!(warband_id)
+    end
+
+    test "get_warband_for_user!/2 returns the warband matching the warband_id and the user_id", %{
+      user: user
+    } do
+      %{id: user_warband_id} = insert(:warband, user: user)
+      %{id: non_user_warband_id} = insert(:warband)
+
+      assert %{id: ^user_warband_id} = Warbands.get_warband_for_user!(user, user_warband_id)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Warbands.get_warband_for_user!(user, non_user_warband_id)
+      end
     end
 
     test "create_warband/1 with valid data creates a warband", %{user: user} do
