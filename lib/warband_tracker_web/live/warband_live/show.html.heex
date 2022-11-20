@@ -9,7 +9,16 @@
 
 <.list>
   <:item title="Name"><%= @warband.name %></:item>
+  <:item title="Gold Crowns"><%= @warband.gold_crowns %></:item>
 </.list>
+
+<p class="font-semibold">Heroes</p>
+<.table id="heroes" rows={@heroes}>
+  <:col :let={hero} label="Name"><%= hero.name %></:col>
+  <:col :let={hero} label="Type"><%= hero.type %></:col>
+</.table>
+
+<.button class="flex items-center gap-2" phx-click="add-hero"><Heroicons.plus_circle mini class="h-5 w-5"/> Add Hero</.button>
 
 <.back navigate={~p"/warbands"}>Back to warbands</.back>
 

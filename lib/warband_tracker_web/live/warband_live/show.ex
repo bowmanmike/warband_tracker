@@ -10,10 +10,18 @@ defmodule WarbandTrackerWeb.WarbandLive.Show do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:warband, Warbands.get_warband!(id))}
+    warband = Warbands.get_warband!(id)
+
+    socket
+    |> assign(:page_title, page_title(socket.assigns.live_action))
+    |> assign(:warband, warband)
+    |> assign(:heroes, Warbands.get_heroes!(warband))
+    |> noreply()
+  end
+
+  def handle_event("add-hero", _params, socket) do
+    # TODO: put up the modal here
+    noreply(socket)
   end
 
   defp page_title(:show), do: "Show Warband"
