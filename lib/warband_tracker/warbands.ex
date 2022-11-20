@@ -107,4 +107,26 @@ defmodule WarbandTracker.Warbands do
     |> Hero.changeset(attrs, warband)
     |> Repo.insert()
   end
+
+  def members(warband) do
+    heroes = get_heroes!(warband)
+    henchmen = get_henchmen!(warband)
+
+    heroes ++ henchmen
+  end
+
+  def get_heroes!(%Warband{} = warband) do
+    warband
+    |> Repo.preload(:heroes)
+    |> Map.get(:heroes)
+  end
+
+  # TODO: not implemented yet
+  def get_henchmen!(%Warband{}) do
+    # warband
+    # |> Repo.preload(:henchmen)
+    # |> Map.get(:henchmen)
+
+    []
+  end
 end

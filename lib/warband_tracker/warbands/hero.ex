@@ -16,6 +16,7 @@ defmodule WarbandTracker.Warbands.Hero do
     field :wounds, :integer
     field :special_rules, {:array, :string}, default: []
     field :weapons_and_armour_rules, :string
+    field :is_leader, :boolean, default: false
 
     belongs_to :warband, WarbandTracker.Warbands.Warband
 
@@ -41,7 +42,8 @@ defmodule WarbandTracker.Warbands.Hero do
       :leadership,
       :special_rules,
       :weapons_and_armour_rules,
-      :warband_id
+      :warband_id,
+      :is_leader
     ])
     |> validate_required([
       :type,
@@ -57,7 +59,8 @@ defmodule WarbandTracker.Warbands.Hero do
       :leadership,
       :special_rules,
       :weapons_and_armour_rules,
-      :warband_id
+      :warband_id,
+      :is_leader
     ])
     |> foreign_key_constraint(:warband, name: "heroes_warband_id_fkey")
   end
