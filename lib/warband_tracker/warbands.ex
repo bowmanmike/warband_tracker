@@ -6,7 +6,8 @@ defmodule WarbandTracker.Warbands do
   import Ecto.Query, warn: false
   alias WarbandTracker.Repo
 
-  alias WarbandTracker.Warbands.Warband
+  alias WarbandTracker.Warbands.{Hero, Warband}
+  alias WarbandTracker.Accounts
 
   @doc """
   Returns the list of warbands.
@@ -19,6 +20,14 @@ defmodule WarbandTracker.Warbands do
   """
   def list_warbands do
     Repo.all(Warband)
+  end
+
+  def list_warbands_for_user(%Accounts.User{id: user_id}) do
+    Warband
+    |> where([w], w.user_id == ^user_id)
+    |> Repo.all()
+
+    # Repo.get_by(Warband, user_id: user_id)
   end
 
   @doc """
@@ -36,6 +45,24 @@ defmodule WarbandTracker.Warbands do
 
   """
   def get_warband!(id), do: Repo.get!(Warband, id)
+
+  @doc """
+  Gets a single warband, scoped to a user
+
+  Raises `Ecto.NoResultsError` if the Warband does not exist.
+
+  ## Examples
+
+      iex> get_warband_for_user!(user, 123)
+      %Warband{}
+
+      iex> get_warband_for_user!(user, 456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_warband_for_user!(%Accounts.User{id: user_id}, warband_id) do
+    Repo.get_by!(Warband, id: warband_id, user_id: user_id)
+  end
 
   @doc """
   Creates a warband.
@@ -100,5 +127,37 @@ defmodule WarbandTracker.Warbands do
   """
   def change_warband(%Warband{} = warband, attrs \\ %{}) do
     Warband.changeset(warband, attrs)
+  end
+
+  def change_hero(%Hero{} = hero, attrs \\ %{}, %Warband{} = warband) do
+    Hero.changeset(hero, attrs, warband)
+  end
+
+  def create_hero(warband, attrs \\ %{}) do
+    %Hero{}
+    |> Hero.changeset(attrs, warband)
+    |> Repo.insert()
+  end
+
+  def members(warband) do
+    heroes = get_heroes!(warband)
+    henchmen = get_henchmen!(warband)
+
+    heroes ++ henchmen
+  end
+
+  def get_heroes!(%Warband{} = warband) do
+    warband
+    |> Repo.preload(:heroes)
+    |> Map.get(:heroes)
+  end
+
+  # TODO: not implemented yet
+  def get_henchmen!(%Warband{}) do
+    # warband
+    # |> Repo.preload(:henchmen)
+    # |> Map.get(:henchmen)
+
+    []
   end
 end

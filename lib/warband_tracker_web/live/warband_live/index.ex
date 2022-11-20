@@ -7,7 +7,7 @@ defmodule WarbandTrackerWeb.WarbandLive.Index do
   @impl true
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(Map.get(session, "user_token"))
-    assigns = %{warbands: list_warbands(), current_user: user}
+    assigns = %{warbands: list_warbands_for_user(user), current_user: user}
 
     {:ok, assign(socket, assigns)}
   end
@@ -40,10 +40,13 @@ defmodule WarbandTrackerWeb.WarbandLive.Index do
     warband = Warbands.get_warband!(id)
     {:ok, _} = Warbands.delete_warband(warband)
 
-    {:noreply, assign(socket, :warbands, list_warbands())}
+    {:noreply, assign(socket, :warbands, list_warbands_for_user(socket.assigns.current_user))}
   end
 
-  defp list_warbands do
-    Warbands.list_warbands()
+  defp list_warbands_for_user(user) do
+    case Warbands.list_warbands_for_user(user) do
+      warbands when is_list(warbands) -> warbands
+      _ -> []
+    end
   end
 end
