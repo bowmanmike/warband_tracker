@@ -129,6 +129,10 @@ defmodule WarbandTracker.Warbands do
     Warband.changeset(warband, attrs)
   end
 
+  def change_hero(%Hero{} = hero, attrs \\ %{}, %Warband{} = warband) do
+    Hero.changeset(hero, attrs, warband)
+  end
+
   def create_hero(warband, attrs \\ %{}) do
     %Hero{}
     |> Hero.changeset(attrs, warband)

@@ -7,7 +7,7 @@ defmodule WarbandTracker.Repo.Migrations.CreateHeroes do
       add :name, :string, null: false
       add :move, :integer, null: false
       add :weapon_skill, :integer, null: false
-      add :bow_skill, :integer, null: false
+      add :ballistic_skill, :integer, null: false
       add :strength, :integer, null: false
       add :toughness, :integer, null: false
       add :wounds, :integer, null: false

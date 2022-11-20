@@ -4,7 +4,7 @@ defmodule WarbandTracker.Warbands.Hero do
 
   schema "heroes" do
     field :attacks, :integer
-    field :bow_skill, :integer
+    field :ballistic_skill, :integer
     field :initiative, :integer
     field :leadership, :integer
     field :move, :integer
@@ -25,7 +25,7 @@ defmodule WarbandTracker.Warbands.Hero do
 
   @doc false
   def changeset(hero, attrs, warband) do
-    attrs = Map.merge(attrs, %{warband_id: warband.id})
+    attrs = Map.merge(attrs, %{"warband_id" => warband.id})
 
     hero
     |> cast(attrs, [
@@ -33,7 +33,7 @@ defmodule WarbandTracker.Warbands.Hero do
       :name,
       :move,
       :weapon_skill,
-      :bow_skill,
+      :ballistic_skill,
       :strength,
       :toughness,
       :wounds,
@@ -50,7 +50,7 @@ defmodule WarbandTracker.Warbands.Hero do
       :name,
       :move,
       :weapon_skill,
-      :bow_skill,
+      :ballistic_skill,
       :strength,
       :toughness,
       :wounds,

@@ -45,13 +45,15 @@
 
 <.modal
   :if={@live_action == :add_hero}
-  id="new-hero-form"
+  id="new-hero-form-modal"
   show
   on_cancel={JS.patch(~p"/warbands/#{@warband}")}
 >
   <.live_component
     module={WarbandTrackerWeb.WarbandLive.Heroes.FormComponent}
     id={:new_hero_form}
-    title="Add a Hero"
+    title={@page_title}
+    warband={@warband}
+    navigate={~p"/warbands/#{@warband}"}
   />
 </.modal>

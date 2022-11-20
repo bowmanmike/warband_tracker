@@ -44,7 +44,7 @@ CREATE TABLE public.heroes (
     name character varying(255) NOT NULL,
     move integer NOT NULL,
     weapon_skill integer NOT NULL,
-    bow_skill integer NOT NULL,
+    ballistic_skill integer NOT NULL,
     strength integer NOT NULL,
     toughness integer NOT NULL,
     wounds integer NOT NULL,
