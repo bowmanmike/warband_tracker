@@ -9,7 +9,26 @@
 
 <.list>
   <:item title="Name"><%= @warband.name %></:item>
+  <:item title="Gold Crowns"><%= @warband.gold_crowns %></:item>
 </.list>
+
+<p class="font-semibold">Heroes</p>
+<.table id="heroes" rows={@heroes}>
+  <:col :let={hero} label="Name"><%= hero.name %></:col>
+  <:col :let={hero} label="Type"><%= hero.type %></:col>
+</.table>
+
+<.link patch={~p"/warbands/#{@warband}/heroes/edit"} phx-click={JS.push_focus()}>
+  <.button class="flex items-center gap-2">
+    <Heroicons.plus_circle mini class="h-5 w-5" /> Add Hero
+  </.button>
+</.link>
+
+<p class="font-semibold">Henchmen</p>
+<.table id="heroes" rows={@henchmen}>
+  <:col :let={henchman} label="Name"><%= henchman.name %></:col>
+  <:col :let={henchman} label="Type"><%= henchman.type %></:col>
+</.table>
 
 <.back navigate={~p"/warbands"}>Back to warbands</.back>
 
@@ -26,6 +45,21 @@
     action={@live_action}
     warband={@warband}
     user={@current_user}
+    navigate={~p"/warbands/#{@warband}"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action == :add_hero}
+  id="new-hero-form-modal"
+  show
+  on_cancel={JS.patch(~p"/warbands/#{@warband}")}
+>
+  <.live_component
+    module={WarbandTrackerWeb.WarbandLive.Heroes.FormComponent}
+    id={:new_hero_form}
+    title={@page_title}
+    warband={@warband}
     navigate={~p"/warbands/#{@warband}"}
   />
 </.modal>

@@ -91,6 +91,8 @@ defmodule WarbandTrackerWeb.Router do
 
       live "/warbands/:id", WarbandLive.Show, :show
       live "/warbands/:id/show/edit", WarbandLive.Show, :edit
+
+      live "/warbands/:id/heroes/edit", WarbandLive.Show, :add_hero
     end
   end
 

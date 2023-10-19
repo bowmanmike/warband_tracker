@@ -39,10 +39,10 @@ defmodule WarbandTrackerWeb.WarbandLive.FormComponent do
   def update(%{warband: warband} = assigns, socket) do
     changeset = warband |> Map.put(:user, assigns.user) |> Warbands.change_warband()
 
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(:changeset, changeset)}
+    socket
+    |> assign(assigns)
+    |> assign(:changeset, changeset)
+    |> ok()
   end
 
   @impl true

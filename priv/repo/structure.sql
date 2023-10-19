@@ -35,6 +35,97 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: henchmen; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.henchmen (
+    id bigint NOT NULL,
+    type character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    number integer NOT NULL,
+    move integer NOT NULL,
+    weapon_skill integer NOT NULL,
+    ballistic_skill integer NOT NULL,
+    strength integer NOT NULL,
+    toughness integer NOT NULL,
+    wounds integer NOT NULL,
+    initiative integer NOT NULL,
+    attacks integer NOT NULL,
+    leadership integer NOT NULL,
+    special_rules character varying(255)[] DEFAULT ARRAY[]::character varying[] NOT NULL,
+    weapons_and_armour_rules character varying(255) NOT NULL,
+    warband_id bigint,
+    group_experience integer DEFAULT 0 NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: henchmen_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.henchmen_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: henchmen_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.henchmen_id_seq OWNED BY public.henchmen.id;
+
+
+--
+-- Name: heroes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.heroes (
+    id bigint NOT NULL,
+    type character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    move integer NOT NULL,
+    weapon_skill integer NOT NULL,
+    ballistic_skill integer NOT NULL,
+    strength integer NOT NULL,
+    toughness integer NOT NULL,
+    wounds integer NOT NULL,
+    initiative integer NOT NULL,
+    attacks integer NOT NULL,
+    leadership integer NOT NULL,
+    special_rules character varying(255)[] DEFAULT ARRAY[]::character varying[] NOT NULL,
+    weapons_and_armour_rules character varying(255) NOT NULL,
+    warband_id bigint,
+    is_leader boolean DEFAULT false NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: heroes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.heroes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: heroes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.heroes_id_seq OWNED BY public.heroes.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -111,38 +202,6 @@ ALTER SEQUENCE public.users_tokens_id_seq OWNED BY public.users_tokens.id;
 
 
 --
--- Name: warband; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.warband (
-    id bigint NOT NULL,
-    name character varying(255),
-    user_id bigint,
-    inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
-);
-
-
---
--- Name: warband_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.warband_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: warband_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.warband_id_seq OWNED BY public.warband.id;
-
-
---
 -- Name: warbands; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -181,6 +240,20 @@ ALTER SEQUENCE public.warbands_id_seq OWNED BY public.warbands.id;
 
 
 --
+-- Name: henchmen id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.henchmen ALTER COLUMN id SET DEFAULT nextval('public.henchmen_id_seq'::regclass);
+
+
+--
+-- Name: heroes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heroes ALTER COLUMN id SET DEFAULT nextval('public.heroes_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -195,17 +268,26 @@ ALTER TABLE ONLY public.users_tokens ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- Name: warband id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.warband ALTER COLUMN id SET DEFAULT nextval('public.warband_id_seq'::regclass);
-
-
---
 -- Name: warbands id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.warbands ALTER COLUMN id SET DEFAULT nextval('public.warbands_id_seq'::regclass);
+
+
+--
+-- Name: henchmen henchmen_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.henchmen
+    ADD CONSTRAINT henchmen_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: heroes heroes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heroes
+    ADD CONSTRAINT heroes_pkey PRIMARY KEY (id);
 
 
 --
@@ -230,14 +312,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users_tokens
     ADD CONSTRAINT users_tokens_pkey PRIMARY KEY (id);
-
-
---
--- Name: warband warband_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.warband
-    ADD CONSTRAINT warband_pkey PRIMARY KEY (id);
 
 
 --
@@ -270,17 +344,26 @@ CREATE INDEX users_tokens_user_id_index ON public.users_tokens USING btree (user
 
 
 --
--- Name: warband_user_id_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX warband_user_id_index ON public.warband USING btree (user_id);
-
-
---
 -- Name: warbands_user_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX warbands_user_id_index ON public.warbands USING btree (user_id);
+
+
+--
+-- Name: henchmen henchmen_warband_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.henchmen
+    ADD CONSTRAINT henchmen_warband_id_fkey FOREIGN KEY (warband_id) REFERENCES public.warbands(id) ON DELETE CASCADE;
+
+
+--
+-- Name: heroes heroes_warband_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.heroes
+    ADD CONSTRAINT heroes_warband_id_fkey FOREIGN KEY (warband_id) REFERENCES public.warbands(id) ON DELETE CASCADE;
 
 
 --
@@ -289,14 +372,6 @@ CREATE INDEX warbands_user_id_index ON public.warbands USING btree (user_id);
 
 ALTER TABLE ONLY public.users_tokens
     ADD CONSTRAINT users_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
-
-
---
--- Name: warband warband_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.warband
-    ADD CONSTRAINT warband_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -312,6 +387,7 @@ ALTER TABLE ONLY public.warbands
 --
 
 INSERT INTO public."schema_migrations" (version) VALUES (20221111181937);
-INSERT INTO public."schema_migrations" (version) VALUES (20221113011101);
 INSERT INTO public."schema_migrations" (version) VALUES (20221113011543);
 INSERT INTO public."schema_migrations" (version) VALUES (20221113222404);
+INSERT INTO public."schema_migrations" (version) VALUES (20221119224903);
+INSERT INTO public."schema_migrations" (version) VALUES (20231019221114);
