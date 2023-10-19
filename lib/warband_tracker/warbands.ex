@@ -4,9 +4,10 @@ defmodule WarbandTracker.Warbands do
   """
 
   import Ecto.Query, warn: false
+  alias WarbandTracker.Warbands.Henchmen
   alias WarbandTracker.Repo
 
-  alias WarbandTracker.Warbands.{Hero, Warband}
+  alias WarbandTracker.Warbands.{Henchmen, Hero, Warband}
   alias WarbandTracker.Accounts
 
   @doc """
@@ -139,11 +140,24 @@ defmodule WarbandTracker.Warbands do
     |> Repo.insert()
   end
 
+  def change_henchmen(%Henchmen{} = henchmen, attrs \\ %{}, %Warband{} = warband) do
+    Henchmen.changeset(henchmen, attrs, warband)
+  end
+
+  def create_henchmen(warband, attrs \\ %{}) do
+    %Henchmen{}
+    |> Henchmen.changeset(attrs, warband)
+    |> Repo.insert()
+  end
+
   def members(warband) do
     heroes = get_heroes!(warband)
     henchmen = get_henchmen!(warband)
 
-    heroes ++ henchmen
+    %{
+      heroes: heroes,
+      henchmen: henchmen
+    }
   end
 
   def get_heroes!(%Warband{} = warband) do
@@ -152,12 +166,9 @@ defmodule WarbandTracker.Warbands do
     |> Map.get(:heroes)
   end
 
-  # TODO: not implemented yet
-  def get_henchmen!(%Warband{}) do
-    # warband
-    # |> Repo.preload(:henchmen)
-    # |> Map.get(:henchmen)
-
-    []
+  def get_henchmen!(%Warband{} = warband) do
+    warband
+    |> Repo.preload(:henchmen)
+    |> Map.get(:henchmen)
   end
 end

@@ -24,6 +24,12 @@
   </.button>
 </.link>
 
+<p class="font-semibold">Henchmen</p>
+<.table id="heroes" rows={@henchmen}>
+  <:col :let={henchman} label="Name"><%= henchman.name %></:col>
+  <:col :let={henchman} label="Type"><%= henchman.type %></:col>
+</.table>
+
 <.back navigate={~p"/warbands"}>Back to warbands</.back>
 
 <.modal

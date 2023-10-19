@@ -13,10 +13,16 @@ defmodule WarbandTrackerWeb.WarbandLive.Show do
   def handle_params(%{"id" => id}, _, socket) do
     warband = Warbands.get_warband_for_user!(socket.assigns.current_user, id)
 
+    %{
+      heroes: heroes,
+      henchmen: henchmen
+    } = Warbands.members(warband)
+
     socket
     |> assign(:page_title, page_title(socket.assigns.live_action))
     |> assign(:warband, warband)
-    |> assign(:heroes, Warbands.get_heroes!(warband))
+    |> assign(:henchmen, henchmen)
+    |> assign(:heroes, heroes)
     |> noreply()
   end
 

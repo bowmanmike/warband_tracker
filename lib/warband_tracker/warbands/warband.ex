@@ -14,6 +14,7 @@ defmodule WarbandTracker.Warbands.Warband do
 
     belongs_to :user, WarbandTracker.Accounts.User
     has_many :heroes, WarbandTracker.Warbands.Hero
+    has_many :henchmen, WarbandTracker.Warbands.Henchmen
 
     timestamps()
   end
