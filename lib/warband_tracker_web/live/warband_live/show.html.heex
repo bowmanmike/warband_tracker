@@ -13,22 +13,49 @@
 </.list>
 
 <p class="font-semibold">Heroes</p>
-<.table id="heroes" rows={@heroes}>
+<.unit_table :if={Enum.count(@heroes) != 0} id="heroes" rows={@heroes}>
   <:col :let={hero} label="Name"><%= hero.name %></:col>
   <:col :let={hero} label="Type"><%= hero.type %></:col>
-</.table>
+  <:col :let={hero} label="Move"><%= hero.move %></:col>
+  <:col :let={hero} label="Weapon Skill"><%= hero.weapon_skill %></:col>
+  <:col :let={hero} label="Ballistic Skill"><%= hero.ballistic_skill %></:col>
+  <:col :let={hero} label="Strength"><%= hero.strength %></:col>
+  <:col :let={hero} label="Toughness"><%= hero.toughness %></:col>
+  <:col :let={hero} label="Wounds"><%= hero.wounds %></:col>
+  <:col :let={hero} label="Initiative"><%= hero.initiative %></:col>
+  <:col :let={hero} label="Attacks"><%= hero.attacks %></:col>
+  <:col :let={hero} label="Leadership"><%= hero.leadership %></:col>
+</.unit_table>
+<p :if={Enum.count(@heroes) == 0}>No Heroes in this warband :(</p>
 
-<.link patch={~p"/warbands/#{@warband}/heroes/edit"} phx-click={JS.push_focus()}>
+<.link patch={~p"/warbands/#{@warband}/heroes/new"} phx-click={JS.push_focus()}>
   <.button class="flex items-center gap-2">
     <Heroicons.plus_circle mini class="h-5 w-5" /> Add Hero
   </.button>
 </.link>
 
 <p class="font-semibold">Henchmen</p>
-<.table id="heroes" rows={@henchmen}>
+<.unit_table :if={Enum.count(@henchmen) != 0} id="henchmen" rows={@henchmen}>
   <:col :let={henchman} label="Name"><%= henchman.name %></:col>
   <:col :let={henchman} label="Type"><%= henchman.type %></:col>
-</.table>
+  <:col :let={henchman} label="Number"><%= henchman.number %></:col>
+  <:col :let={henchmen} label="Move"><%= henchmen.move %></:col>
+  <:col :let={henchmen} label="Weapon Skill"><%= henchmen.weapon_skill %></:col>
+  <:col :let={henchmen} label="Ballistic Skill"><%= henchmen.ballistic_skill %></:col>
+  <:col :let={henchmen} label="Strength"><%= henchmen.strength %></:col>
+  <:col :let={henchmen} label="Toughness"><%= henchmen.toughness %></:col>
+  <:col :let={henchmen} label="Wounds"><%= henchmen.wounds %></:col>
+  <:col :let={henchmen} label="Initiative"><%= henchmen.initiative %></:col>
+  <:col :let={henchmen} label="Attacks"><%= henchmen.attacks %></:col>
+  <:col :let={henchmen} label="Leadership"><%= henchmen.leadership %></:col>
+</.unit_table>
+<p :if={Enum.count(@henchmen) == 0}>No Henchmen in this warband :(</p>
+
+<.link patch={~p"/warbands/#{@warband}/henchmen/new"} phx-click={JS.push_focus()}>
+  <.button class="flex items-center gap-2">
+    <Heroicons.plus_circle mini class="h-5 w-5" /> Add Henchmen
+  </.button>
+</.link>
 
 <.back navigate={~p"/warbands"}>Back to warbands</.back>
 
@@ -58,6 +85,21 @@
   <.live_component
     module={WarbandTrackerWeb.WarbandLive.Heroes.FormComponent}
     id={:new_hero_form}
+    title={@page_title}
+    warband={@warband}
+    navigate={~p"/warbands/#{@warband}"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action == :add_henchmen}
+  id="new-henchmen-form-modal"
+  show
+  on_cancel={JS.patch(~p"/warbands/#{@warband}")}
+>
+  <.live_component
+    module={WarbandTrackerWeb.WarbandLive.Henchmen.FormComponent}
+    id={:new_henchmen_form}
     title={@page_title}
     warband={@warband}
     navigate={~p"/warbands/#{@warband}"}

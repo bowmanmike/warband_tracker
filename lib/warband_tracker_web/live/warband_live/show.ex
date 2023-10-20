@@ -40,4 +40,5 @@ defmodule WarbandTrackerWeb.WarbandLive.Show do
   defp page_title(:show), do: "Show Warband"
   defp page_title(:edit), do: "Edit Warband"
   defp page_title(:add_hero), do: "Add A Hero"
+  defp page_title(:add_henchmen), do: "Add A Henchmen Group"
 end
