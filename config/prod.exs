@@ -20,3 +20,4 @@ config :logger, level: :info
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
+config :warband_tracker, WarbandTrackerWeb.Endpoint, url: [host: "warband-tracker.bowmanmike.com"]
